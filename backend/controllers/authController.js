@@ -1,12 +1,10 @@
 const jwt = require('jsonwebtoken');
-const path = require('path');   // <-- ADICIONE
-const fs = require('fs');       // <-- ADICIONE
+const path = require('path');
+const fs = require('fs');
 const Admin = require('../models/Admin');
 const { jwtSecret } = require('../config/auth');
 const { maxAttempts, blockTime } = require('../config/auth');
-
-// Armazenamento de tentativas (mesmo do rateLimit, mas usaremos globalmente)
-const attempts = {};
+const loginAttemptService = require('../services/loginAttemptService');
 
 exports.login = async (req, res) => {
   const { name, password } = req.body;
@@ -15,55 +13,51 @@ exports.login = async (req, res) => {
   }
 
   // Verifica bloqueio
-  const record = attempts[name] || { count: 0, blockedUntil: 0 };
-  if (record.blockedUntil > Date.now()) {
-    const remaining = Math.ceil((record.blockedUntil - Date.now()) / 60000);
+  const blockStatus = await loginAttemptService.checkBlocked(name);
+  if (blockStatus.blocked) {
     return res.status(429).json({
-      error: `Conta bloqueada. Tente novamente em ${remaining} minuto(s).`,
+      error: `Conta bloqueada. Tente novamente em ${blockStatus.remainingMinutes} minuto(s).`,
       blocked: true,
-      remainingMinutes: remaining
+      remainingMinutes: blockStatus.remainingMinutes
     });
   }
 
   try {
     const admin = await Admin.findOne({ where: { name } });
     if (!admin) {
-      // Incrementa tentativas
-      attempts[name] = { count: (record.count || 0) + 1, blockedUntil: 0 };
-      if (attempts[name].count >= maxAttempts) {
-        attempts[name].blockedUntil = Date.now() + blockTime;
+      const failStatus = await loginAttemptService.registerFailure(name);
+      if (failStatus.blocked) {
         return res.status(401).json({
           error: 'Muitas tentativas. Conta bloqueada por 5 minutos.',
           blocked: true,
-          remainingMinutes: 5
+          remainingMinutes: failStatus.remainingMinutes
         });
       }
       return res.status(401).json({
-        error: `Credenciais inválidas. Tentativas restantes: ${maxAttempts - attempts[name].count}`,
-        attemptsLeft: maxAttempts - attempts[name].count
+        error: `Credenciais inválidas. Tentativas restantes: ${failStatus.attemptsLeft}`,
+        attemptsLeft: failStatus.attemptsLeft
       });
     }
 
     // Verifica senha
     const valid = await admin.comparePassword(password);
     if (!valid) {
-      attempts[name] = { count: (record.count || 0) + 1, blockedUntil: 0 };
-      if (attempts[name].count >= maxAttempts) {
-        attempts[name].blockedUntil = Date.now() + blockTime;
+      const failStatus = await loginAttemptService.registerFailure(name);
+      if (failStatus.blocked) {
         return res.status(401).json({
           error: 'Muitas tentativas. Conta bloqueada por 5 minutos.',
           blocked: true,
-          remainingMinutes: 5
+          remainingMinutes: failStatus.remainingMinutes
         });
       }
       return res.status(401).json({
-        error: `Credenciais inválidas. Tentativas restantes: ${maxAttempts - attempts[name].count}`,
-        attemptsLeft: maxAttempts - attempts[name].count
+        error: `Credenciais inválidas. Tentativas restantes: ${failStatus.attemptsLeft}`,
+        attemptsLeft: failStatus.attemptsLeft
       });
     }
 
-    // Login bem-sucedido: limpa tentativas
-    delete attempts[name];
+    // Login OK: limpa tentativas
+    await loginAttemptService.clearAttempts(name);
 
     const token = jwt.sign(
       { id: admin.id, name: admin.name },
@@ -86,6 +80,7 @@ exports.login = async (req, res) => {
     res.status(500).json({ error: 'Erro interno' });
   }
 };
+
 
 exports.updateProfile = async (req, res) => {
   const { newName, currentPassword, newPassword } = req.body;
