@@ -1,0 +1,155 @@
+[
+  {
+    "id": 1,
+    "name": "Sarruf",
+    "yearClass": "admin",
+    "image": "https://placehold.co/400x240?text=Admin",
+    "role": "admin",
+    "password": "37843737",
+    "profileImage": "/uploads/profiles/1785932419838-193644737.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Emerson",
+    "yearClass": "admin",
+    "image": "https://placehold.co/400x240?text=Admin",
+    "role": "admin",
+    "password": "12345677",
+    "profileImage": null
+  },
+  {
+    "id": 3,
+    "name": "Teste",
+    "yearClass": "4ano",
+    "image": "/uploads/4ano/1785886429053-26051361.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Emerson2",
+    "yearClass": "admin",
+    "image": "https://placehold.co/400x240?text=Admin",
+    "role": "admin",
+    "password": "12345677",
+    "profileImage": null
+  },
+  {
+    "id": 14,
+    "name": "Lufy",
+    "yearClass": "2ano",
+    "image": "/uploads/2ano/1785939884208-493050033.jpg",
+    "role": "user",
+    "password": null
+  },
+  {
+    "id": 15,
+    "name": "Roberto Cesar Soltoski",
+    "yearClass": "1ano",
+    "image": "https://media.licdn.com/dms/image/v2/C4D03AQGMJtE5QbeSng/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1517363961171?e=2147483647&v=beta&t=6XJsdswZAVtyyfynnGoG2lGuEcT7uJTyYqgvElwPfj0",
+    "role": "user",
+    "password": null
+  },
+  {
+    "id": 16,
+    "name": "José Mateus Bido",
+    "yearClass": "1ano",
+    "image": "https://media.licdn.com/dms/image/v2/D4D03AQH3Q72QF8rG4Q/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1725066510546?e=2147483647&v=beta&t=-wPyoPEwLn7NDU2ozPyPZVWiwHRNqrke_93_cozwQTM",
+    "role": "user",
+    "password": null
+  },
+  {
+    "id": 17,
+    "name": "Paulo Roberto Custódio de Oliveira",
+    "yearClass": "1ano",
+    "image": "/uploads/1ano/1785941689107-955505253.png",
+    "role": "user",
+    "password": null
+  },
+  {
+    "id": 18,
+    "name": "Emerson Ferreira da Silva",
+    "yearClass": "1ano",
+    "image": "/uploads/1ano/1785941844651-377290358.png",
+    "role": "user",
+    "password": null
+  },
+  {
+    "id": 20,
+    "name": "Carlos Henrique Furtado",
+    "yearClass": "1ano",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjhYspSja-jl2fYvKlT-n0gZRQyl90z9ZNk0PU3hJHL6_M25s_EnYicxj2&s=10",
+    "role": "user",
+    "password": null
+  },
+  {
+    "id": 21,
+    "name": "Alison Antony Ribeiro",
+    "yearClass": "1ano",
+    "image": "https://snct.ifspcjo.edu.br/2015/arquivos/img/palestrantes/alison_antony.jpg",
+    "role": "user",
+    "password": null
+  },
+  {
+    "id": 22,
+    "name": "Fausto Jacomin",
+    "yearClass": "1ano",
+    "image": "/uploads/1ano/1785944065181-451389586.png",
+    "role": "user",
+    "password": null
+  },
+  {
+    "id": 23,
+    "name": "Xernobill1",
+    "yearClass": "1ano",
+    "image": "/uploads/1ano/1785944720168-384392653.png",
+    "role": "user",
+    "password": null
+  },
+  {
+    "id": 24,
+    "name": "Xernobill2",
+    "yearClass": "2ano",
+    "image": "/uploads/2ano/1785944882400-868401982.png",
+    "role": "user",
+    "password": null
+  },
+  {
+    "id": 25,
+    "name": "Xernobill3",
+    "yearClass": "2ano",
+    "image": "/uploads/2ano/1785944898072-186855862.png",
+    "role": "user",
+    "password": null
+  },
+  {
+    "id": 26,
+    "name": "Marcos Paulo Rosa",
+    "yearClass": "2ano",
+    "image": "https://i1.rgstatic.net/ii/profile.image/272335735357450-1441941307288_Q512/Marcos-Paulo-Rosa.jpg",
+    "role": "user",
+    "password": null
+  },
+  {
+    "id": 27,
+    "name": "Xernobill4",
+    "yearClass": "2ano",
+    "image": "/uploads/2ano/1786010698976-79241182.jpg",
+    "role": "user",
+    "password": null
+  },
+  {
+    "id": 28,
+    "name": "Ciro",
+    "yearClass": "1ano",
+    "image": "/uploads/1ano/1786033172931-701743682.jpg",
+    "role": "user",
+    "password": null
+  },
+  {
+    "id": 29,
+    "name": "Ruzza",
+    "yearClass": "4ano",
+    "image": "/uploads/4ano/1786033199801-342235796.jpg",
+    "role": "user",
+    "password": null
+  }
+]
