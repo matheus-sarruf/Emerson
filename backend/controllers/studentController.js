@@ -27,7 +27,8 @@ exports.create = async (req, res) => {
 
   let image = '';
   if (req.file) {
-    image = `/uploads/${yearClass}/${req.file.filename}`;
+    const folder = path.basename(req.file.destination);
+    image = `/uploads/${folder}/${req.file.filename}`;
   } else if (req.body.imageUrl) {
     image = req.body.imageUrl;
   }
@@ -65,7 +66,8 @@ exports.update = async (req, res) => {
         const oldPath = path.join(__dirname, '..', student.image);
         if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
       }
-      student.image = `/uploads/${yearClass || student.yearClass}/${req.file.filename}`;
+      const folder = path.basename(req.file.destination);
+      student.image = `/uploads/${folder}/${req.file.filename}`;
     } else if (req.body.imageUrl) {
       student.image = req.body.imageUrl;
     }

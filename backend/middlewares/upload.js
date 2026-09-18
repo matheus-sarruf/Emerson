@@ -6,14 +6,18 @@ const fs = require('fs');
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     let folder = 'outros';
-    if (req.baseUrl.includes('/profile')) {
+
+    // Combina baseUrl + path para pegar a URL completa (ex: /auth/profile/image)
+    const fullUrl = req.baseUrl + req.path;
+
+    if (fullUrl.includes('/profile')) {
       folder = 'profiles';
     } else if (req.body.yearClass) {
       folder = req.body.yearClass;
     } else if (req.params.id) {
-      // Para atualização, podemos usar a turma existente (será definida depois)
       folder = 'alunos';
     }
+
     const dir = path.join(__dirname, '..', 'uploads', folder);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     cb(null, dir);

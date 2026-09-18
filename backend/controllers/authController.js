@@ -1,4 +1,6 @@
 const jwt = require('jsonwebtoken');
+const path = require('path');   // <-- ADICIONE
+const fs = require('fs');       // <-- ADICIONE
 const Admin = require('../models/Admin');
 const { jwtSecret } = require('../config/auth');
 const { maxAttempts, blockTime } = require('../config/auth');
@@ -75,6 +77,7 @@ exports.login = async (req, res) => {
       user: {
         id: admin.id,
         name: admin.name,
+        role: admin.role,
         profileImage: admin.profileImage || null
       }
     });
