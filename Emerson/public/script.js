@@ -2,11 +2,14 @@
 // CONFIGURAÇÃO: URL do servidor 
 
 // ================================================
+
+
 const API_BASE_URL = 'http://localhost:3000'; //<--- alterar
 
 // ================================================
 // VARIÁVEIS GLOBAIS
 // ================================================
+
 let currentStudents = [];
 let activeFilter = "todos";
 let searchTerm = "";
@@ -16,6 +19,7 @@ let authToken = localStorage.getItem('authToken');
 // ================================================
 // DOM ELEMENTOS
 // ================================================
+
 const galeriaDiv = document.getElementById("galeriaContainer");
 const filtrosBtns = document.querySelectorAll("#filtrosContainer button");
 const studentCountSpan = document.getElementById("studentCount");
@@ -197,7 +201,7 @@ async function addStudentToServer(name, yearClass, imageBase64, file) {
         const response = await fetch(`${API_BASE_URL}/students`, {
             method: 'POST',
             headers: {
-                'Authorization': authToken || ''
+                'Authorization': `Bearer ${authToken}`
             },
             body: formData
         });
@@ -230,7 +234,7 @@ async function deleteStudentById(id) {
         try {
             const response = await fetch(`${API_BASE_URL}/students/${id}`, {
                 method: 'DELETE',
-                headers: { 'Authorization': authToken || '' }
+                headers: { 'Authorization': `Bearer ${authToken}` }
             });
             if (response.status === 401) {
                 alert('Você precisa estar logado como administrador.');
@@ -256,7 +260,7 @@ async function promoteYear(fromClass, toClass, fromLabel, toLabel) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': authToken || ''
+                    'Authorization': `Bearer ${authToken}`
                 },
                 body: JSON.stringify({ fromClass, toClass })
             });
@@ -284,7 +288,7 @@ async function deleteAllByYear(yearClass, yearLabel) {
         try {
             const response = await fetch(`${API_BASE_URL}/students?year=${yearClass}`, {
                 method: 'DELETE',
-                headers: { 'Authorization': authToken || '' }
+                headers: { 'Authorization': `Bearer ${authToken}` }
             });
             if (response.status === 401) {
                 alert('Você precisa estar logado como administrador.');
@@ -308,7 +312,7 @@ async function loadAdmins() {
     if (!authToken) return;
     try {
         const response = await fetch(`${API_BASE_URL}/admin/list`, {
-            headers: { 'Authorization': authToken }
+            headers: { 'Authorization': `Bearer ${authToken}` }
         });
         if (response.ok) {
             const admins = await response.json();
@@ -348,7 +352,7 @@ async function deleteAdmin(id) {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/${id}`, {
             method: 'DELETE',
-            headers: { 'Authorization': authToken }
+            headers: { 'Authorization': `Bearer ${authToken}` }
         });
         if (response.ok) {
             alert('Administrador removido!');
@@ -393,7 +397,7 @@ async function updateProfile(name, currentPassword, newPassword) {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': authToken
+                'Authorization': `Bearer ${authToken}`
             },
             body: JSON.stringify({ newName: name, currentPassword, newPassword })
         });
@@ -429,7 +433,7 @@ async function uploadProfileImage(file) {
         const response = await fetch(`${API_BASE_URL}/auth/profile/image`, {
             method: 'POST',
             headers: {
-                'Authorization': authToken
+                'Authorization': `Bearer ${authToken}`
             },
             body: formData
         });
@@ -679,7 +683,7 @@ function initEventListeners() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': authToken
+                    'Authorization': `Bearer ${authToken}`
                 },
                 body: JSON.stringify({ name, password })
             });
