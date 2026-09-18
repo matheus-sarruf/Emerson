@@ -1,7 +1,8 @@
 // ================================================
-// CONFIGURAÇÃO: URL do servidor
+// CONFIGURAÇÃO: URL do servidor 
+
 // ================================================
-const API_BASE_URL = '';
+const API_BASE_URL = 'http://localhost:3000'; //<--- alterar
 
 // ================================================
 // VARIÁVEIS GLOBAIS
@@ -39,7 +40,6 @@ function getYearLabel(yearClass) {
     const map = { "1ano": "1º Ano", "2ano": "2º Ano", "3ano": "3º Ano", "4ano": "4º Ano" };
     return map[yearClass] || "Turma";
 }
-
 function escapeHtml(str) {
     if (!str) return '';
     return str.replace(/[&<>]/g, function (m) {
@@ -68,14 +68,13 @@ function showModal(title, message, onConfirm) {
     modalConfirmBtn.addEventListener("click", confirmHandler);
     modalCancelBtn.addEventListener("click", cancelHandler);
 }
-
 // ================================================
 // SISTEMA DE LOGIN Total
 // ================================================
 
 async function login(name, password) {
     try {
-        const response = await fetch(`${API_BASE_URL}/login`, {
+        const response = await fetch(`${API_BASE_URL}/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, password })
@@ -390,7 +389,7 @@ function closeProfileModal() {
 
 async function updateProfile(name, currentPassword, newPassword) {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/profile`, {
+        const response = await fetch(`${API_BASE_URL}/auth/profile`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -427,7 +426,7 @@ async function uploadProfileImage(file) {
     formData.append('profileImage', file);
 
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/profile/image`, {
+        const response = await fetch(`${API_BASE_URL}/auth/profile/image`, {
             method: 'POST',
             headers: {
                 'Authorization': authToken
