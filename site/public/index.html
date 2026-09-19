@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Galeria de Estudantes | IFPR - Campus Goioerê</title>
+    <link rel="icon" href="logos/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+       <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="header-flex">
+        <div class="logo-area">
+          <div class="logo-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <div class="logo-text">
+            <h2>IFPR - Campus Goioerê</h2>
+            <p>Ensino, Pesquisa e Extensão • Tecnologia & Inovação</p>
+          </div>
+        </div>
+        <div class="header-buttons">
+          <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i> <span id="themeText">Modo Escuro</span>
+          </button>
+          <button id="profileBtn" class="btn-primary admin-only"
+            style="display:none;">
+            <i class="fas fa-user-edit"></i> Perfil
+          </button>
+          <button id="loginBtn" class="btn-primary admin-only"
+            style="display:none;">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </button>
+          <button id="logoutBtn" class="btn-reset admin-only"
+            style="display:none;">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+          <span id="userInfo"
+            style="display:none; margin-left: 10px; font-weight:bold;"></span>
+        </div>
+      </div>
+
+      <h1 class="main-title"><i class="fas fa-users"></i> Galeria de
+        Estudantes</h1>
+
+      <div class="filtros" id="filtrosContainer">
+        <button data-filter="todos" class="ativo">Todos</button>
+        <button data-filter="1ano">1º Ano</button>
+        <button data-filter="2ano">2º Ano</button>
+        <button data-filter="3ano">3º Ano</button>
+        <button data-filter="4ano">4º Ano</button>
+      </div>
+
+      <div class="stats-bar">
+        <div class="student-count" id="studentCount"><i
+            class="fas fa-user-graduate"></i> Carregando...</div>
+
+        <div class="search-container">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="searchInput" placeholder="Buscar estudante..."
+            aria-label="Buscar estudante">
+        </div>
+
+        <div class="action-buttons">
+          <button id="showFormBtn" class="btn-primary admin-only"
+            style="display:none;">
+            <i class="fas fa-plus-circle"></i> Novo Estudante
+          </button>
+          <button id="toggleAdminPanelBtn" class="btn-primary admin-only"
+            style="display:none; background: var(--btn-warning);">
+            <i class="fas fa-user-cog"></i> Gerenciar Admins
+          </button>
+          <button id="dynamicActionBtn" class="btn-dynamic"
+            style="display: none;"></button>
+        </div>
+      </div>
+
+      <div id="addFormPanel" class="add-form" style="display: none;">
+        <h3 style="margin-bottom: 15px;"><i class="fas fa-user-plus"></i>
+          Adicionar estudante</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nome completo</label>
+            <input type="text" id="studentName"
+              placeholder="Ex: Ana Clara Souza" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label>Turma / Ano</label>
+            <select id="studentYear">
+              <option value="1ano">1º Ano</option>
+              <option value="2ano">2º Ano</option>
+              <option value="3ano">3º Ano</option>
+              <option value="4ano">4º Ano</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>URL da imagem (ou faça upload)</label>
+            <input type="text" id="imageUrl"
+              placeholder="https://exemplo.com/foto.jpg">
+            <div class="file-helper"><i class="fas fa-cloud-upload-alt"></i> Ou
+              selecione arquivo:</div>
+            <input type="file" id="imageUpload"
+              accept="image/jpeg, image/png, image/jpg">
+          </div>
+          <div>
+            <button id="confirmAddBtn" class="btn-add"><i
+                class="fas fa-save"></i> Adicionar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Painel de Administração  -->
+      <div id="adminPanel" class="admin-only"
+        style="display:none; margin-top:20px; background:var(--bg-surface); border-radius:28px; padding:20px; border:1px solid var(--border-color);">
+        <h3 style="margin-bottom: 15px;"><i class="fas fa-user-cog"></i>
+          Gerenciar Administradores</h3>
+        <p
+          style="font-size:0.9rem; margin-bottom:15px; color:var(--text-secondary);">Crie
+          novos administradores para gerenciar a galeria.</p>
+
+        <!-- Formulário de criar admin (igual ao de aluno) -->
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nome do administrador</label>
+            <input type="text" id="newAdminName" placeholder="Digite o nome"
+              autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label>Senha</label>
+            <input type="password" id="newAdminPassword"
+              placeholder="Digite a senha" autocomplete="off">
+          </div>
+          <div>
+            <button id="createAdminBtn" class="btn-add">
+              <i class="fas fa-user-plus"></i> Criar Admin
+            </button>
+          </div>
+        </div>
+        <div id="adminList" style="margin-top:15px;"></div>
+      </div>
+
+      <div id="galeriaContainer" class="galeria"></div>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div id="customModal" class="modal">
+      <div class="modal-content">
+        <h3 id="modalTitle">Confirmar ação</h3>
+        <p id="modalMessage">Deseja continuar?</p>
+        <div class="modal-buttons">
+          <button id="modalConfirmBtn" class="modal-btn confirm">Sim</button>
+          <button id="modalCancelBtn" class="modal-btn cancel">Não</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Login -->
+    <div id="loginModal" class="modal" style="display:none;">
+      <div class="modal-content">
+        <h3><i class="fas fa-lock"></i> Login Administrador</h3>
+        <p style="margin-bottom:15px;">Entre com suas credenciais para gerenciar
+          a galeria.</p>
+        <form id="loginForm">
+          <div class="form-group">
+            <label>Nome de usuário</label>
+            <input type="text" id="loginName" placeholder="Digite seu nome"
+              required>
+          </div>
+          <div class="form-group">
+            <label>Senha</label>
+            <input type="password" id="loginPassword"
+              placeholder="Digite sua senha" required>
+          </div>
+          <button type="submit" class="btn-primary"
+            style="width:100%; margin-top:10px;">
+            <i class="fas fa-sign-in-alt"></i> Entrar
+          </button>
+          <button type="button" onclick="closeLoginModal()" class="btn-reset"
+            style="width:100%; margin-top:5px;">
+            Cancelar
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal de Perfil -->
+    <div id="profileModal" class="modal" style="display:none;">
+      <div class="modal-content" style="max-width:450px;">
+        <h3><i class="fas fa-user-cog"></i> Meu Perfil</h3>
+
+        <!-- Foto de perfil -->
+        <div style="text-align:center; margin:15px 0;">
+          <img id="profilePreview" src="https://placehold.co/150x150?text=Admin"
+            style="width:150px; height:150px; border-radius:50%; object-fit:cover; border:3px solid var(--if-green);">
+          <div style="margin-top:8px;">
+            <label for="profileImageUpload"
+              style="cursor:pointer; color:var(--if-green);">
+              <i class="fas fa-camera"></i> Trocar foto
+            </label>
+            <input type="file" id="profileImageUpload" accept="image/*"
+              style="display:none;">
+          </div>
+        </div>
+
+        <!-- Formulário do perfil -->
+        <form id="profileForm">
+          <div class="form-group">
+            <label>Nome de usuário</label>
+            <input type="text" id="profileName" placeholder="Seu nome">
+          </div>
+          <div class="form-group">
+            <label>Senha atual (para mudar a senha)</label>
+            <input type="password" id="profileCurrentPassword"
+              placeholder="Senha atual">
+          </div>
+          <div class="form-group">
+            <label>Nova senha</label>
+            <input type="password" id="profileNewPassword"
+              placeholder="Nova senha (opcional)">
+          </div>
+          <div class="form-group">
+            <label>Confirmar nova senha</label>
+            <input type="password" id="profileConfirmPassword"
+              placeholder="Confirme a nova senha">
+          </div>
+          <button type="submit" class="btn-primary"
+            style="width:100%; margin-top:10px;">
+            <i class="fas fa-save"></i> Salvar alterações
+          </button>
+          <button type="button" onclick="closeProfileModal()" class="btn-reset"
+            style="width:100%; margin-top:5px;">
+            Cancelar
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <footer>
+      <i class="fas fa-copyright"></i> 2026 IFPR Goioerê - Desenvolvido por
+      <a href="https://github.com/matheus-sarruf" target="_blank">Matheus
+        Sarruf</a> • Galeria interativa
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>

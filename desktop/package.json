@@ -1,0 +1,48 @@
+{
+  "name": "galeria-ifpr-desktop",
+  "version": "1.0.0",
+  "description": "Galeria de Estudantes IFPR - Desktop com modo offline",
+  "author": "Matheus Sarruf",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win",
+    "build:portable": "electron-builder --win portable"
+  },
+  "build": {
+    "appId": "br.edu.ifpr.galeria",
+    "productName": "Galeria IFPR",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*"
+    ]
+  },
+  "devDependencies": {
+    "electron": "^44.4.3",
+    "electron-builder": "^26.15.3"
+  }
+}

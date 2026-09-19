@@ -1,0 +1,25 @@
+directories:
+  output: dist
+  buildResources: build
+appId: br.edu.ifpr.galeria
+productName: Galeria IFPR
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+    - target: portable
+      arch:
+        - x64
+  icon: build/icon.ico
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+files:
+  - filter:
+      - main.js
+      - preload.js
+      - renderer/**/*
+electronVersion: 44.4.3
