@@ -1,3 +1,6 @@
 node_modules/
 dist/
 *.exe
+desktop/node_modules/electron/dist/electron.exe
+desktop/node_modules/electron/dist/electron.exe
+/desktop/node_modules/electron/dist
