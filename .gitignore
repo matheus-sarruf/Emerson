@@ -1,6 +1,21 @@
+# Ignorar dependências do Node (Electron e outras bibliotecas)
 node_modules/
+
+# Ignorar a pasta de instaladores e build do aplicativo
 dist/
+build/
+
+# Ignorar qualquer arquivo executável gerado
 *.exe
-desktop/node_modules/electron/dist/electron.exe
-desktop/node_modules/electron/dist/electron.exe
-/desktop/node_modules/electron/dist
+*.dmg
+*.pkg
+*.deb
+*.rpm
+
+# Ignorar arquivos de log e cache do sistema
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+.DS_Store
+Thumbs.db
