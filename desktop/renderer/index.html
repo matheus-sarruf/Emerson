@@ -11,6 +11,24 @@
   </head>
 
   <body>
+    
+    <div id="customModal" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modalTitle">Título</h3>
+          <button class="modal-close"
+            onclick="document.getElementById('customModal').style.display='none'">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p id="modalMessage">Mensagem aqui.</p>
+        </div>
+        <div class="modal-footer">
+          <button id="modalCancelBtn" class="btn-modal-cancel"
+            style="display: none;">Cancelar</button>
+          <button id="modalConfirmBtn" class="btn-modal-confirm">OK</button>
+        </div>
+      </div>
+    </div>
 
     <div id="offlineBanner" style="
         display: none;
@@ -160,18 +178,6 @@
       </div>
 
       <div id="galeriaContainer" class="galeria"></div>
-    </div>
-
-    <!-- Modal de Confirmação -->
-    <div id="customModal" class="modal">
-      <div class="modal-content">
-        <h3 id="modalTitle">Confirmar ação</h3>
-        <p id="modalMessage">Deseja continuar?</p>
-        <div class="modal-buttons">
-          <button id="modalConfirmBtn" class="modal-btn confirm">Sim</button>
-          <button id="modalCancelBtn" class="modal-btn cancel">Não</button>
-        </div>
-      </div>
     </div>
 
     <!-- Modal de Login -->

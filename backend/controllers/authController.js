@@ -7,77 +7,82 @@ const { maxAttempts, blockTime } = require('../config/auth');
 const loginAttemptService = require('../services/loginAttemptService');
 
 exports.login = async (req, res) => {
-  const { name, password } = req.body;
-  if (!name || !password) {
-    return res.status(400).json({ error: 'Nome e senha são obrigatórios' });
-  }
-
-  // Verifica bloqueio
-  const blockStatus = await loginAttemptService.checkBlocked(name);
-  if (blockStatus.blocked) {
-    return res.status(429).json({
-      error: `Conta bloqueada. Tente novamente em ${blockStatus.remainingMinutes} minuto(s).`,
-      blocked: true,
-      remainingMinutes: blockStatus.remainingMinutes
-    });
-  }
-
   try {
-    const admin = await Admin.findOne({ where: { name } });
-    if (!admin) {
-      const failStatus = await loginAttemptService.registerFailure(name);
-      if (failStatus.blocked) {
-        return res.status(401).json({
-          error: 'Muitas tentativas. Conta bloqueada por 5 minutos.',
-          blocked: true,
-          remainingMinutes: failStatus.remainingMinutes
-        });
-      }
-      return res.status(401).json({
-        error: `Credenciais inválidas. Tentativas restantes: ${failStatus.attemptsLeft}`,
-        attemptsLeft: failStatus.attemptsLeft
+    const { name, password } = req.body;
+    if (!name || !password) {
+      return res.status(400).json({ error: 'Nome e senha são obrigatórios' });
+    }
+
+    // Verifica bloqueio
+    const blockStatus = await loginAttemptService.checkBlocked(name);
+    if (blockStatus.blocked) {
+      return res.status(429).json({
+        error: `Conta bloqueada. Tente novamente em ${blockStatus.remainingMinutes} minuto(s).`,
+        blocked: true,
+        remainingMinutes: blockStatus.remainingMinutes
       });
     }
 
-    // Verifica senha
-    const valid = await admin.comparePassword(password);
-    if (!valid) {
-      const failStatus = await loginAttemptService.registerFailure(name);
-      if (failStatus.blocked) {
+    try {
+      const admin = await Admin.findOne({ where: { name } });
+      if (!admin) {
+        const failStatus = await loginAttemptService.registerFailure(name);
+        if (failStatus.blocked) {
+          return res.status(401).json({
+            error: 'Muitas tentativas. Conta bloqueada por 5 minutos.',
+            blocked: true,
+            remainingMinutes: failStatus.remainingMinutes
+          });
+        }
         return res.status(401).json({
-          error: 'Muitas tentativas. Conta bloqueada por 5 minutos.',
-          blocked: true,
-          remainingMinutes: failStatus.remainingMinutes
+          error: `Credenciais inválidas. Tentativas restantes: ${failStatus.attemptsLeft}`,
+          attemptsLeft: failStatus.attemptsLeft
         });
       }
-      return res.status(401).json({
-        error: `Credenciais inválidas. Tentativas restantes: ${failStatus.attemptsLeft}`,
-        attemptsLeft: failStatus.attemptsLeft
-      });
-    }
 
-    // Login OK: limpa tentativas
-    await loginAttemptService.clearAttempts(name);
-
-    const token = jwt.sign(
-      { id: admin.id, name: admin.name },
-      jwtSecret,
-      { expiresIn: '24h' }
-    );
-
-    res.json({
-      success: true,
-      token,
-      user: {
-        id: admin.id,
-        name: admin.name,
-        role: admin.role,
-        profileImage: admin.profileImage || null
+      // Verifica senha
+      const valid = await admin.comparePassword(password);
+      if (!valid) {
+        const failStatus = await loginAttemptService.registerFailure(name);
+        if (failStatus.blocked) {
+          return res.status(401).json({
+            error: 'Muitas tentativas. Conta bloqueada por 5 minutos.',
+            blocked: true,
+            remainingMinutes: failStatus.remainingMinutes
+          });
+        }
+        return res.status(401).json({
+          error: `Credenciais inválidas. Tentativas restantes: ${failStatus.attemptsLeft}`,
+          attemptsLeft: failStatus.attemptsLeft
+        });
       }
-    });
+
+      // Login OK: limpa tentativas
+      await loginAttemptService.clearAttempts(name);
+
+      const token = jwt.sign(
+        { id: admin.id, name: admin.name },
+        jwtSecret,
+        { expiresIn: '24h' }
+      );
+
+      res.json({
+        success: true,
+        token,
+        user: {
+          id: admin.id,
+          name: admin.name,
+          role: admin.role,
+          profileImage: admin.profileImage || null
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Erro interno' });
+    }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Erro interno' });
+    console.error("Erro no banco de dados durante o login:", error);
+    return res.status(500).json({ error: "Erro interno no servidor. Tente novamente." });
   }
 };
 

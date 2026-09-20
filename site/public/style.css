@@ -1,10 +1,22 @@
-* {
+/* ================================================================
+   GALERIA IFPR — ESTILOS
+   Aqui eu defino todo o visual da galeria: cores, espaçamentos,
+   tipografia e responsividade.
+   ================================================================ */
+
+/* ---------- RESET & BASE ---------- */
+/* Zera margens e paddings padrão do navegador e define border-box
+   pra facilitar o cálculo de larguras. */
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
+/* Minhas variáveis de tema. Uso elas em tudo pra ficar fácil
+   trocar de cor sem precisar caçar valor no meio do arquivo. */
 :root {
     --bg-body: #f0f4f0;
     --bg-surface: #ffffff;
@@ -22,8 +34,13 @@
     --btn-danger: #b33a3a;
     --btn-warning: #c97e1a;
     --modal-overlay: rgba(0, 0, 0, 0.5);
+    --radius-sm: 8px;
+    --radius-md: 24px;
+    --radius-lg: 32px;
+    --radius-pill: 40px;
 }
 
+/* Tema escuro: sobrescrevo só as variáveis que mudam */
 body.dark {
     --bg-body: #121212;
     --bg-surface: #3a5830;
@@ -46,21 +63,32 @@ body {
     background-color: var(--bg-body);
     color: var(--text-primary);
     font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-    padding: 24px 20px 24px;
+    padding: 24px 20px;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Padronizo a fonte de todo elemento de formulário */
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 .container {
     width: 98%;
+    max-width: 1400px;
     margin: 0 auto;
     flex: 1;
 }
 
-/* HEADER */
-
+/* ---------- HEADER ---------- */
+/* Cabeçalho com a logo e os botões de ação no topo */
 .header-flex {
     display: flex;
     justify-content: space-between;
@@ -70,7 +98,7 @@ body {
     margin-bottom: 30px;
     background: var(--bg-surface);
     padding: 15px 25px;
-    border-radius: 32px;
+    border-radius: var(--radius-lg);
     box-shadow: var(--card-shadow);
     border: 1px solid var(--border-color);
 }
@@ -93,6 +121,7 @@ body {
     font-size: 28px;
     color: white;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
 }
 
 .logo-text h2 {
@@ -118,11 +147,12 @@ body.dark .logo-text h2 {
     flex-wrap: wrap;
 }
 
+/* Botão que alterna entre tema claro e escuro */
 .theme-toggle {
     background: var(--if-green-light);
     border: none;
     padding: 10px 18px;
-    border-radius: 40px;
+    border-radius: var(--radius-pill);
     cursor: pointer;
     font-weight: bold;
     font-size: 1rem;
@@ -132,8 +162,8 @@ body.dark .logo-text h2 {
     color: var(--text-primary);
 }
 
-/* TITULO */
-
+/* ---------- TÍTULOS ---------- */
+/* O título principal da página tem um gradiente verde-amarelo */
 .main-title {
     text-align: center;
     margin: 20px 0 15px;
@@ -145,8 +175,8 @@ body.dark .logo-text h2 {
     color: transparent;
 }
 
-/* FILTROS */
-
+/* ---------- FILTROS ---------- */
+/* Botões que filtram os alunos por turma */
 .filtros {
     display: flex;
     justify-content: center;
@@ -157,15 +187,13 @@ body.dark .logo-text h2 {
 
 .filtros button {
     padding: 10px 24px;
-    border: none;
-    border-radius: 40px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-pill);
     background: var(--bg-surface);
     color: var(--text-primary);
     font-weight: 600;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--border-color);
-    transition: 0.2s;
 }
 
 .filtros button:hover {
@@ -180,8 +208,8 @@ body.dark .logo-text h2 {
     box-shadow: 0 4px 10px rgba(30, 107, 47, 0.3);
 }
 
-/* STATS BAR */
-   
+/* ---------- STATS BAR ---------- */
+/* Barra que mostra a contagem de alunos, a busca e os botões de ação */
 .stats-bar {
     display: flex;
     justify-content: space-between;
@@ -209,8 +237,8 @@ body.dark .logo-text h2 {
     flex-wrap: wrap;
 }
 
-/* BOTOES */
-
+/* ---------- BOTÕES ---------- */
+/* Base compartilhada entre os botões principais, reset e dinâmicos */
 .btn-primary,
 .btn-reset,
 .btn-dynamic {
@@ -223,7 +251,6 @@ body.dark .logo-text h2 {
     align-items: center;
     gap: 8px;
     font-size: 0.9rem;
-    transition: all 0.2s ease;
 }
 
 .btn-primary {
@@ -256,19 +283,28 @@ body.dark .logo-text h2 {
     transform: scale(0.97);
 }
 
+.btn-block {
+    width: 100%;
+    margin-top: 10px;
+    justify-content: center;
+}
+
 .admin-only {
     transition: all 0.3s ease;
 }
 
-/* FORMULARIO */
-
+/* ---------- FORMULÁRIO ---------- */
+/* Painel que aparece quando clico em "Novo Estudante" */
 .add-form {
     background: var(--bg-surface);
     border-radius: 28px;
     padding: 20px 25px;
     margin-bottom: 35px;
     border: 1px solid var(--border-color);
-    transition: all 0.2s;
+}
+
+.add-form h3 {
+    margin-bottom: 15px;
 }
 
 .form-grid {
@@ -295,17 +331,24 @@ body.dark .logo-text h2 {
 .form-group select {
     width: 100%;
     padding: 10px 12px;
-    border-radius: 40px;
+    border-radius: var(--radius-pill);
     border: 1px solid var(--border-color);
     background: var(--bg-body);
     color: var(--text-primary);
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--if-green);
+    box-shadow: 0 0 0 3px rgba(27, 143, 53, 0.2);
 }
 
 .btn-add {
     background: var(--if-green);
     border: none;
     padding: 10px 24px;
-    border-radius: 40px;
+    border-radius: var(--radius-pill);
     color: white;
     font-weight: bold;
     cursor: pointer;
@@ -314,14 +357,18 @@ body.dark .logo-text h2 {
     align-items: center;
 }
 
+.btn-add:hover {
+    filter: brightness(1.08);
+}
+
 .file-helper {
     font-size: 0.7rem;
     margin-top: 4px;
     opacity: 0.7;
 }
 
-/* GALERIA */
-
+/* ---------- GALERIA ---------- */
+/* Grid responsivo dos cards dos alunos */
 .galeria {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -331,12 +378,12 @@ body.dark .logo-text h2 {
 
 .card {
     background: var(--bg-surface);
-    border-radius: 24px;
+    border-radius: var(--radius-md);
     overflow: hidden;
     box-shadow: var(--card-shadow);
-    transition: transform 0.25s ease, box-shadow 0.2s;
     border: 1px solid var(--border-color);
     position: relative;
+    transition: transform 0.25s ease, box-shadow 0.2s;
 }
 
 .card:hover {
@@ -381,10 +428,9 @@ body.dark .logo-text h2 {
     color: white;
     width: 32px;
     height: 32px;
-    border-radius: 40px;
+    border-radius: var(--radius-pill);
     cursor: pointer;
     backdrop-filter: blur(4px);
-    transition: 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -395,8 +441,8 @@ body.dark .logo-text h2 {
     transform: scale(1.05);
 }
 
-/* MODAL */
-
+/* ---------- MODAIS ---------- */
+/* Base de todos os modais (aviso, login e perfil) */
 .modal {
     display: none;
     position: fixed;
@@ -408,17 +454,24 @@ body.dark .logo-text h2 {
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    padding: 20px;
 }
 
 .modal-content {
     background: var(--bg-surface);
-    border-radius: 32px;
+    border-radius: var(--radius-lg);
     padding: 28px 24px;
     width: 90%;
     max-width: 400px;
     text-align: center;
     box-shadow: 0 20px 35px rgba(0, 0, 0, 0.3);
     border: 1px solid var(--border-color);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-content--profile {
+    max-width: 450px;
 }
 
 .modal-content h3 {
@@ -442,11 +495,10 @@ body.dark .logo-text h2 {
 .modal-btn {
     padding: 10px 24px;
     border: none;
-    border-radius: 40px;
+    border-radius: var(--radius-pill);
     font-weight: bold;
     cursor: pointer;
     font-size: 0.9rem;
-    transition: 0.2s;
 }
 
 .modal-btn.confirm {
@@ -469,52 +521,27 @@ body.dark .logo-text h2 {
     transform: scale(0.96);
 }
 
-/* MODAL DE LOGIN */
-
+/* Modais específicos */
 #loginModal .modal-content {
     max-width: 380px;
 }
 
-#loginModal .form-group {
-    margin-bottom: 12px;
-}
-
-#loginModal .form-group input {
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 40px;
-    border: 1px solid var(--border-color);
-    background: var(--bg-body);
-    color: var(--text-primary);
-}
-
-#loginModal .form-group label {
-    display: block;
-    font-size: 0.8rem;
-    font-weight: 600;
-    margin-bottom: 4px;
-    color: var(--text-secondary);
-}
-
-/* MODAL DE PERFIL */
-
-   #profileModal .modal-content {
-    max-width: 450px;
-}
-
+#loginModal .form-group,
 #profileModal .form-group {
     margin-bottom: 12px;
 }
 
+#loginModal .form-group input,
 #profileModal .form-group input {
     width: 100%;
     padding: 10px 12px;
-    border-radius: 40px;
+    border-radius: var(--radius-pill);
     border: 1px solid var(--border-color);
     background: var(--bg-body);
     color: var(--text-primary);
 }
 
+#loginModal .form-group label,
 #profileModal .form-group label {
     display: block;
     font-size: 0.8rem;
@@ -523,15 +550,21 @@ body.dark .logo-text h2 {
     color: var(--text-secondary);
 }
 
-#profileImageUpload {
-    opacity: 0;
-    position: absolute;
-    width: 0;
-    height: 0;
+/* ---------- PERFIL ---------- */
+/* Área com a foto e o botão de trocar imagem */
+.profile-photo-area {
+    text-align: center;
+    margin: 15px 0;
 }
 
 #profilePreview {
-    transition: all 0.3s ease;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--if-green);
+    transition: transform 0.3s ease;
+    image-rendering: auto;
 }
 
 #profilePreview:hover {
@@ -539,105 +572,67 @@ body.dark .logo-text h2 {
     cursor: pointer;
 }
 
-/* FOTO DE PERFIL (AJUSTES DE QUALIDADE) */
-#profilePreview,
-#userInfo img,
-.profile-image {
-    image-rendering: auto;
-    image-rendering: high-quality;
-    image-rendering: -webkit-optimize-contrast;
+/* Escondo o input de arquivo mas deixo o label estilizado acionar ele */
+#profileImageUpload {
+    opacity: 0;
+    position: absolute;
+    width: 0;
+    height: 0;
 }
 
+.profile-photo-label {
+    display: inline-block;
+    margin-top: 8px;
+    cursor: pointer;
+    color: var(--if-green);
+    font-weight: 600;
+}
+
+/* ---------- USER INFO ---------- */
+/* Nome do usuário logado no header */
 #userInfo {
     display: flex;
     align-items: center;
     gap: 5px;
-    font-size: 1.1rem;
+    font-size: 1rem;
     background: var(--if-green-light);
     padding: 5px 12px;
     border-radius: 30px;
+    font-weight: bold;
 }
 
-/* ADMIN PANEL */
+#userInfo img {
+    image-rendering: auto;
+}
 
+/* ---------- ADMIN PANEL ---------- */
+/* Painel que lista os admins e permite criar/remover */
 #adminPanel {
     margin-bottom: 30px;
+    background: var(--bg-surface);
+    border-radius: 28px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.admin-panel-hint {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    color: var(--text-secondary);
 }
 
 #adminList {
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
-.admin-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 15px;
-    background: var(--bg-body);
-    border-radius: 30px;
-    margin-bottom: 5px;
-}
-
-.admin-item span {
-    font-weight: 500;
-}
-
-/* FOOTER */
-footer {
-    margin-top: 70px;
-    margin-bottom: 5px;
-    text-align: center;
-    font-size: 0.9rem;
-    padding: 20px;
-    background: var(--footer-bg);
-    border-radius: 30px;
-    color: var(--text-secondary);
-    width: 100%;
-}
-
-footer a {
-    color: var(--text-secondary);
-    text-decoration: none;
-    transition: font-size 40s ease-in-out;
-}
-
-footer a:hover {
-    font-size: 400%;
-    color: white;
-}
-
-/* RESPONSIVIDADE */
-
-@media (max-width: 650px) {
-    body {
-        padding: 16px;
-    }
-
-    .form-grid {
-        flex-direction: column;
-    }
-
-    .stats-bar {
-        flex-direction: column;
-        align-items: stretch;
-        border-radius: 28px;
-    }
-
-    .action-buttons {
-        justify-content: center;
-    }
-}
-
-/* CAMPO DE BUSCA */
-
+/* ---------- BUSCA ---------- */
 .search-container {
     display: flex;
     align-items: center;
     background: var(--bg-body);
-    border-radius: 40px;
+    border-radius: var(--radius-pill);
     padding: 4px 12px;
     border: 1px solid var(--border-color);
-    transition: border-color 0.2s, box-shadow 0.2s;
     flex: 1 1 200px;
     max-width: 300px;
 }
@@ -669,10 +664,100 @@ footer a:hover {
     opacity: 0.6;
 }
 
-/* Responsivo */
+/* ---------- FOOTER ---------- */
+footer {
+    margin-top: 70px;
+    margin-bottom: 5px;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 20px;
+    background: var(--footer-bg);
+    border-radius: 30px;
+    color: var(--text-secondary);
+    width: 100%;
+}
+
+footer a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+footer a:hover {
+    color: var(--if-green);
+    text-decoration: underline;
+}
+
+/* ---------- RESPONSIVIDADE ---------- */
+/* Ajustes pra telas pequenas (celular) */
 @media (max-width: 650px) {
+    body {
+        padding: 16px;
+    }
+
+    .form-grid {
+        flex-direction: column;
+    }
+
+    .stats-bar {
+        flex-direction: column;
+        align-items: stretch;
+        border-radius: 28px;
+    }
+
+    .action-buttons {
+        justify-content: center;
+    }
+
     .search-container {
         max-width: 100%;
         flex-basis: 100%;
     }
+
+    .main-title {
+        font-size: 1.5rem;
+    }
+}
+
+.login-error {
+    color: #ff6b6b;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 12px;
+    background: rgba(255, 107, 107, 0.1);
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.login-error {
+    color: #ff6b6b;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+    margin: 8px 0 12px;
+    background: rgba(255, 107, 107, 0.15);
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+/* Garantia de que o modal de login fica sempre na frente */
+#loginModal {
+    z-index: 2000;
+}
+
+/* Mensagem de erro do login sempre visível */
+#loginError {
+    position: relative;
+    z-index: 10;
+}
+
+/* Modal genérico fica acima do login (pra quando o token expira) */
+#customModal {
+    z-index: 3000;
+}
+
+/* Modal de perfil também */
+#profileModal {
+    z-index: 1500;
 }

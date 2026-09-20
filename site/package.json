@@ -1,19 +1,18 @@
 {
-  "name": "emerson",
+  "name": "galeria-ifpr-frontend",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
+  "description": "Frontend web da Galeria de Estudantes do IFPR - Campus Goioerê",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "npx serve .",
+    "dev": "npx serve ."
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "dependencies": {
-    "cors": "^2.8.6",
-    "express": "^5.2.1",
-    "multer": "^2.2.0"
-  }
+  "keywords": [
+    "ifpr",
+    "galeria",
+    "estudantes",
+    "web"
+  ],
+  "author": "Matheus Sarruf",
+  "license": "MIT"
 }
